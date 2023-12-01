@@ -54,3 +54,4 @@ def scrape_return_stats(year):
 
 # Utilisation de la fonction pour l'année 2022
 scrape_return_stats(2022)
+
