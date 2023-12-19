@@ -18,15 +18,7 @@ class joueur:
         return txt
 
 
-    #méthode pour print les stats d'un joueur
-    def afficher_infos_annee(self, annee):
-        if annee in self.infos.columns:
-            infos_annee = self.infos[annee].to_dict()
-            print(f"{self.__str__()} en {annee}:")
-            for cle, valeur in infos_annee.items():
-                print(f"{cle}: {valeur}")
-        else:
-            print(f"Aucune information disponible pour {self.nom} en {annee}")
+
 
 
 
