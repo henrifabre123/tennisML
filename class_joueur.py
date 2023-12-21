@@ -16,12 +16,3 @@ class joueur:
         txt += f"taille : {self.infos['height'].values[0]}\n"
         txt += f"main : {self.infos['hand'].values[0]}"
         return txt
-
-
-
-
-
-
-rafa=joueur('rafael nadal')
-
-print(rafa)
