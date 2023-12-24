@@ -66,7 +66,7 @@ def scrape_pressure_stats(year):
     tree = html.fromstring(content)
 
     # Utiliser l'XPath pour extraire le tableau
-    table = tree.xpath('//div[@id="statsListingTableContent"]/table')[0]
+    table = tree.xpath('//div[@class="leaderboard"]/table')[0]
 
 
 
@@ -90,9 +90,10 @@ def scrape_pressure_stats(year):
 #Test de la fonction under pressure
 #scrape_pressure_stats(2022)
 
-
+"""""
 data_pressure = pd.concat([scrape_pressure_stats(i) for i in range(1991, 2022)], ignore_index=True)
 data_pressure.to_csv('stats_under_pressure_1991_2022.csv', index=False)
 
 data_return = pd.concat([scrape_return_stats(i) for i in range(1991, 2022)], ignore_index=True)
 data_return.to_csv('stats_under_pressure_1991_2022.csv', index=False)
+"""

@@ -1,7 +1,9 @@
 from shiny import render, ui
 from shiny.express import input
+import pandas as pd
 
-ui.panel_title("Hello Shiny!")
+
+ui.panel_title("Comparison of players")
 ui.input_slider("n", "N", 0, 100, 20)
 
 
