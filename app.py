@@ -1,12 +1,16 @@
-from shiny import render, ui
-from shiny.express import input
+from shiny import ui, App
 import pandas as pd
 
+df_info_joueurs = pd.read_csv('/Users/henrifabre/myapp/tennisML/tennisML/Data/Data_utiles/info_joueurs.csv')
 
-ui.panel_title("Comparison of players")
-ui.input_slider("n", "N", 0, 100, 20)
+annees = list(range(1993,2022))
 
 
-@render.text
-def txt():
-    return f"n*2 is {input.n() * 2}"
+app_ui = ui.page_fluid(
+    ui.input_selectize("x2", "Selectize (single)", annees, multiple = True)
+)
+
+
+app = App(app_ui, None)
+
+
