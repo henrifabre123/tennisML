@@ -3,8 +3,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import ast
+from pathlib import Path
 
-df_infos_joueurs=pd.read_csv('./Data/Data_utiles/info_joueurs.csv')
+
+# onetime things to load
+my_file = Path(__file__).parent / "Data/Data_utiles/info_joueurs.csv"
+df_infos_joueurs = pd.read_csv(my_file)
+
 
 class joueur:
 
@@ -86,10 +91,10 @@ class joueur:
         radar_chart.plot(title=f"statistiques de {self.nom} en {year}")
 
 
-
+""""
 rafa=joueur("rafael nadal")
 rafa.vis_rang()
-
+"""
 
 
 

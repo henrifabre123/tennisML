@@ -5,8 +5,13 @@ import numpy as np
 import ast
 from class_joueur import joueur
 from class_joueur import PlayerRadarChart
+from pathlib import Path
 
-df_info_joueurs = pd.read_csv('/Users/henrifabre/myapp/tennisML/tennisML/Data/Data_utiles/info_joueurs.csv')
+
+# onetime things to load
+my_file = Path(__file__).parent / "Data/Data_utiles/info_joueurs.csv"
+
+df_info_joueurs = pd.read_csv(my_file)
 
 annees = list(range(1993,2022))
 joueurs = list(df_info_joueurs['name'])
@@ -31,11 +36,10 @@ app_ui = ui.page_fluid(
 
 def server(input, output, session):
     @output
-    @render.plot(alt="A histogram")
+    @render.plot(alt="A spider web")
     def plot1():
         player = joueur(input.joueur())
-        fig, ax = plt.subplots()
-        ax = player.vis_rang()  # Supposons que vis_rang prend un axe (ax) en paramètre pour le tracé
+        fig = player.vis_stats(input.annee())  
         return fig
     
 
