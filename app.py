@@ -14,9 +14,19 @@ joueurs = list(df_info_joueurs['name'])
 
 
 app_ui = ui.page_fluid(
-    ui.input_selectize("annee", "Selectize (single)", annees, multiple = False),
-    ui.input_selectize("joueur", "Selectize (single)", joueurs, multiple = False),
-    ui.output_plot("plot1", click=True, dblclick=True, hover=True, brush=True)
+    ui.row(
+        ui.column(
+            4,
+            ui.panel_well(
+                ui.input_selectize("annee", "Selectize (single)", annees, multiple = False),
+                ui.input_selectize("joueur", "Selectize (single)", joueurs, multiple = False)
+            ),
+        ),
+        ui.column(
+            8,
+            ui.output_plot("plot1", click=True, dblclick=True, hover=True, brush=True) 
+        ) 
+    )
 )
 
 def server(input, output, session):
@@ -25,7 +35,7 @@ def server(input, output, session):
     def plot1():
         player = joueur(input.joueur())
         fig, ax = plt.subplots()
-        player.vis_rang()  # Supposons que vis_rang prend un axe (ax) en paramètre pour le tracé
+        ax = player.vis_rang()  # Supposons que vis_rang prend un axe (ax) en paramètre pour le tracé
         return fig
     
 
