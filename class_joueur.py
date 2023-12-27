@@ -28,6 +28,49 @@ class joueur:
 
     import matplotlib.pyplot as plt
 
+
+    def list_rang(self):
+        """Fonction qui retourne les données pour l'évolution du rang d'un joueur."""
+        liste_rang = []
+        liste_annee = []
+
+        for year in range(1993, 2022):
+            year_data_str = self.infos[str(year)].values[0]
+            year_data_dict = ast.literal_eval(year_data_str)
+
+            if 'rang' in year_data_dict:
+                liste_rang.append(year_data_dict['rang'])
+                liste_annee.append(year)
+
+        return {'annees': liste_annee, 'rangs': liste_rang}
+
+    def list_stats(self, year):
+        """Fonction qui retourne les données pour le graphique radar des stats du joueur."""
+        if self.infos.empty or str(year) not in self.infos:
+            print(f"No data available for {self.nom} in {year}.")
+            return None
+
+        # Convert the year's data from string to dictionary
+        year_data_str = self.infos[str(year)].values[0]
+        year_data_dict = ast.literal_eval(year_data_str)
+
+        if not year_data_dict:
+            print(f"{self.nom} n'a pas joué cette année")
+            return None
+
+        # Define the keys to plot
+        keys_to_plot = [
+            'pourc_return_win_pnt', 'pourc_break_games', 'pourc_break_point_made',
+            'pourc_break_point_saved', 'pourc_serv_games_win', 'pourc_serv_in',
+            ' % Break Point Saved', ' % Break Points Converted Pressure',
+            ' % Deciding Sets Won', ' % Tie Breaks Won'
+        ]
+
+        # Filter the data
+        filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
+
+        return filtered_data
+    
     def vis_rang(self):
         """Fonction qui plot l'évolution du rang d'un joueur au fil de sa carrière."""
         liste_rang = []
@@ -89,6 +132,7 @@ class joueur:
         # Generate and show the radar chart
         radar_chart = PlayerRadarChart(filtered_data)
         radar_chart.plot(title=f"statistiques de {self.nom} en {year}")
+
 
 
 """"
