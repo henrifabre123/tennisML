@@ -66,26 +66,29 @@ def scrape_pressure_stats(year):
     tree = html.fromstring(content)
 
     # Utiliser l'XPath pour extraire le tableau
-    table = tree.xpath('//div[@class="leaderboard"]/table')[0]
+    table = tree.xpath('//table[@border="0" and @cellpadding="0" and @cellspacing="0"]')[0]
 
 
 
+    
+    player_names = [name.strip() for name in table.xpath('.//td[2]/div/div[3]/text()')]
+    
+    
+    # Ensuite, extraire les autres données de la ligne
     data = []
-    for row in table.xpath('.//tbody//tr'):
-        player_name_elements = row.xpath('.//td[2]/div/a[@class="stats-player-name"]/text()')
-        player_name = player_name_elements[0].strip() if player_name_elements else 'N/A'
-        
-        # Extraire les autres données de la ligne
-        row_data = [player_name] + [td.text.strip() if td.text else '' for td in row.xpath('.//td')[1:]]  # Ajouter le nom du joueur en première colonne
-        #print("Row data:", row_data)
+    for row, player_name in zip(table.xpath('.//tbody//tr'), player_names):
+        row_data = [player_name] + [td.text.strip() if td.text else '' for td in row.xpath('.//td')[2:]]  # Commencer à partir de la troisième colonne car la première contient les numéros et la deuxième le nom du joueur
         data.append(row_data)
+
+    # Créer un DataFrame Pandas
+    df = pd.DataFrame(data, columns=['Name', 'Under Pressure Rating', '% Break Points Converted', '% Break Points Saved', '% Tie Breaks Won', '% Deciding Sets Won'])
 
     # Créer un DataFrame Pandas
     df = pd.DataFrame(data, columns = ['Name',' ','Under Pressure Rating','% Break Points Converted','% Break Point Saved','% Tie Breaks Won','% Deciding Sets Won'])
     df['Year'] = year
     df['Ranking']= df.index + 1
     df.insert(0, 'Ranking', df.pop('Ranking'))
-    return df
+    return player_names
 
 #Test de la fonction under pressure
 #scrape_pressure_stats(2022)
