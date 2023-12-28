@@ -1,0 +1,12 @@
+{
+    "https://api.shinyapps.io": {
+        "server_url": "https://api.shinyapps.io",
+        "filename": "/Users/henrifabre/myapp/tennisML/tennisML",
+        "app_url": "https://henrifabre.shinyapps.io/apptennis1/",
+        "app_id": 10844346,
+        "app_guid": null,
+        "title": "apptennis",
+        "app_mode": "python-shiny",
+        "app_store_version": 1
+    }
+}
