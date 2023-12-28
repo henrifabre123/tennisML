@@ -3,6 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import ast
+import joblib
+from keras.models import load_model
+from sklearn.preprocessing import StandardScaler
+
 
 df_infos_joueurs=pd.read_csv('./Data/Data_utiles/info_joueurs.csv')
 
@@ -36,7 +40,7 @@ class joueur:
                 liste_rang.append(year_data_dict['rang'])
                 liste_annee.append(year)
 
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(8, 6))
         plt.plot(liste_annee, liste_rang, marker='o', linestyle='-', color='b', label='Classement')
 
         # Ajout des étiquettes d'axe et du titre
@@ -86,13 +90,93 @@ class joueur:
         radar_chart.plot(title=f"statistiques de {self.nom} en {year}")
 
 
+    def prediction_atp_points(self, year):
 
-rafa=joueur("rafael nadal")
-rafa.vis_rang()
+        print(self.infos)
+        # Convert the year's data from string to dictionary
+        year_data_str = self.infos[str(year)].values[0]
+        year_data_dict = ast.literal_eval(year_data_str)
+
+        if not year_data_dict:
+            print(f"{self.nom} n'a pas joué cette année")
+            return
+
+        df_year = pd.read_csv('./Data/Data_utiles/Data_ML/infos_joueurs_{}.csv'.format(year))
+
+        X = df_year[df_year['name'] == self.nom].copy()
+
+        # Sélection des colonnes avant la normalisation
+        X = X.drop(['Unnamed: 0', 'rang', 'name', 'hand', 'atp_points'], axis=1).copy()
+        if len(X.columns)>16:
+            X=X.drop(['Return Rating', ' % Serve Return Points Won',
+                   ' % 2nd Serve Return Points Won', ' % Return Games Won',
+                   ' % Break Points Converted', 'Under Pressure Rating',
+                   ' % Break Point Saved', ' % Break Points Converted Pressure',
+                   ' % Deciding Sets Won', ' % Tie Breaks Won'], axis=1)
+        else:
+            X=X.drop([ 'Under Pressure Rating',
+                   ' % Break Point Saved', ' % Break Points Converted Pressure',
+                   ' % Deciding Sets Won', ' % Tie Breaks Won'], axis=1)
+
+        X = X.reset_index(drop=True)
+
+        # Normalisation des données après la sélection des colonnes
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+
+        all_players_neural_network_model = load_model('./Modeles_ML/all_players_neural_network_model.keras')
+
+        return all_players_neural_network_model.predict(X_scaled)
 
 
+    def list_rang(self):
+        """Fonction qui retourne les données pour l'évolution du rang d'un joueur."""
+        liste_rang = []
+        liste_annee = []
+
+        for year in range(1993, 2022):
+            year_data_str = self.infos[str(year)].values[0]
+            year_data_dict = ast.literal_eval(year_data_str)
+
+            if 'rang' in year_data_dict:
+                liste_rang.append(year_data_dict['rang'])
+                liste_annee.append(year)
+
+        return {'annees': liste_annee, 'rangs': liste_rang}
+
+    def list_stats(self, year):
+        """Fonction qui retourne les données pour le graphique radar des stats du joueur."""
+        if self.infos.empty or str(year) not in self.infos:
+            print(f"No data available for {self.nom} in {year}.")
+            return None
+
+        # Convert the year's data from string to dictionary
+        year_data_str = self.infos[str(year)].values[0]
+        year_data_dict = ast.literal_eval(year_data_str)
+
+        if not year_data_dict:
+            print(f"{self.nom} n'a pas joué cette année")
+            return None
+
+        # Define the keys to plot
+        keys_to_plot = [
+            'pourc_return_win_pnt', 'pourc_break_games', 'pourc_break_point_made',
+            'pourc_break_point_saved', 'pourc_serv_games_win', 'pourc_serv_in',
+            ' % Break Point Saved', ' % Break Points Converted Pressure',
+            ' % Deciding Sets Won', ' % Tie Breaks Won'
+        ]
+
+        # Filter the data
+        filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
+
+        return filtered_data
 
 
+#rafa=joueur("rafael nadal")
+#print(rafa.prediction_atp_points(2015))
+
+#djoko=joueur("novak djokovic")
+#print(djoko.prediction_atp_points(2015))
 
 class PlayerRadarChart:
     def __init__(self, data):
