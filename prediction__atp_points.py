@@ -71,9 +71,9 @@ df = df.drop('atp_points', axis=1)
 
 # Séparation des données en ensembles d'entraînement et de test
 
-X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.2, random_state=30)
 
-X_all_players_train, X_all_players_test, y_all_players_train, y_all_players_test = train_test_split(df_all_players, y_all_players, test_size=0.2, random_state=42)
+X_all_players_train, X_all_players_test, y_all_players_train, y_all_players_test = train_test_split(df_all_players, y_all_players, test_size=0.2, random_state=30)
 
 print(X_train.columns)
 # Pour le cas où on a supprimé une partie des joueurs, on va faire une régression Ridge car c'est un modèle qui
@@ -216,9 +216,9 @@ model.save('./Modeles_ML/neural_network_model.keras')
 
 """ On fait de même avec le datasets qui contient tous les joueurs """
 
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_all_players_train)
-X_test_scaled = scaler.transform(X_all_players_test)
+#scaler = StandardScaler()
+#X_train_scaled = scaler.fit_transform(X_all_players_train)
+#X_test_scaled = scaler.transform(X_all_players_test)
 
 # Construction du modèle de réseau de neurones
 model = models.Sequential()
@@ -231,10 +231,10 @@ model.add(layers.Dense(1))  # Couche de sortie sans activation pour la régressi
 model.compile(optimizer='adam', loss='mean_squared_error')
 
 # Entraînement du modèle
-model.fit(X_train_scaled, y_all_players_train, epochs=100, batch_size=32, validation_split=0.2)
+model.fit(X_all_players_train, y_all_players_train, epochs=100, batch_size=32, validation_split=0.2)
 
 # Évaluation du modèle sur l'ensemble de test
-y_pred = model.predict(X_test_scaled)
+y_pred = model.predict(X_all_players_test)
 mse = mean_squared_error(y_all_players_test, y_pred)
 rmse = np.sqrt(mse)
 
