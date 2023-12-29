@@ -94,6 +94,6 @@ def server(input, output,session):
 
     
 
-app = App(app_ui, server)
+app = App(app_ui, server, debug = True)
 
 
