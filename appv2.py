@@ -139,38 +139,38 @@ class JoueurApp:
             self.label_prediction.pack(pady=10)
 
     
-        def setup_comparison_ui(self):
+    def setup_comparison_ui(self):
         # Si les widgets de comparaison existent déjà, on les met à jour au lieu de les recréer
-            if not hasattr(self, 'label_annee_compare'):
-                # Création du widget de sélection de l'année pour la comparaison
-                self.label_annee_compare = tk.Label(self.root, text="Sélectionnez une année pour la comparaison :")
-                self.label_annee_compare.pack(pady=10)
+        if not hasattr(self, 'label_annee_compare'):
+            # Création du widget de sélection de l'année pour la comparaison
+            self.label_annee_compare = tk.Label(self.root, text="Sélectionnez une année pour la comparaison :")
+            self.label_annee_compare.pack(pady=10)
+            self.selected_annee_compare = tk.StringVar()
+            self.selected_annee_compare.set("2022")  # Année par défaut pour la comparaison
 
-                self.selected_annee_compare = tk.StringVar()
-                self.selected_annee_compare.set("2022")  # Année par défaut pour la comparaison
+            self.annee_menu_compare = ttk.Combobox(self.root, textvariable=self.selected_annee_compare, values=[str(year) for year in range(1993, 2023)])
+            self.annee_menu_compare.pack(pady=10)
+        
+            self.annee_menu_compare.bind('<<ComboboxSelected>>', self.update_joueur_menu_compare)
 
-                self.annee_menu_compare = ttk.Combobox(self.root, textvariable=self.selected_annee_compare, values=[str(year) for year in range(1993, 2023)])
-                self.annee_menu_compare.pack(pady=10)
-                self.annee_menu_compare.bind('<<ComboboxSelected>>', self.update_joueur_menu_compare)
+            # Création du widget de sélection du joueur pour la comparaison
+            self.label_joueur_compare = tk.Label(self.root, text="Sélectionnez un joueur pour la comparaison :")
+            self.label_joueur_compare.pack(pady=10)
 
-                # Création du widget de sélection du joueur pour la comparaison
-                self.label_joueur_compare = tk.Label(self.root, text="Sélectionnez un joueur pour la comparaison :")
-                self.label_joueur_compare.pack(pady=10)
+            self.selected_joueur_compare = tk.StringVar()
+            self.joueur_menu_compare = ttk.Combobox(self.root, textvariable=self.selected_joueur_compare)
+            self.joueur_menu_compare.pack(pady=10)
 
-                self.selected_joueur_compare = tk.StringVar()
-                self.joueur_menu_compare = ttk.Combobox(self.root, textvariable=self.selected_joueur_compare)
-                self.joueur_menu_compare.pack(pady=10)
-
-                # Bouton pour effectuer la comparaison
-                self.button_execute_compare = tk.Button(self.root, text="Comparer", command=self.execute_comparison, state=tk.DISABLED)
-                self.button_execute_compare.pack(pady=10)
-            else:
-                # Les widgets existent déjà, on les affiche simplement
-                self.label_annee_compare.pack(pady=10)
-                self.annee_menu_compare.pack(pady=10)
-                self.label_joueur_compare.pack(pady=10)
-                self.joueur_menu_compare.pack(pady=10)
-                self.button_execute_compare.pack(pady=10)
+            # Bouton pour effectuer la comparaison
+            self.button_execute_compare = tk.Button(self.root, text="Comparer", command=self.execute_comparison, state=tk.DISABLED)
+            self.button_execute_compare.pack(pady=10)
+        else:
+            # Les widgets existent déjà, on les affiche simplement
+            self.label_annee_compare.pack(pady=10)
+            self.annee_menu_compare.pack(pady=10)
+            self.label_joueur_compare.pack(pady=10)
+            self.joueur_menu_compare.pack(pady=10)
+            self.button_execute_compare.pack(pady=10)
 
     def update_joueur_menu_compare(self, event=None):
         # Mettre à jour le menu déroulant des joueurs en fonction de l'année sélectionnée pour la comparaison
