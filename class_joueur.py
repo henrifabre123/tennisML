@@ -74,12 +74,6 @@ class joueur:
         filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
 
         return filtered_data
-    
-    def a_joue(self, year):
-        """Fonction qui vérifie si le joueur a joué pendant une année spécifiée."""
-        year_data_str = self.infos[str(year)].values[0]
-        year_data_dict = ast.literal_eval(year_data_str)
-        return bool(year_data_dict)
 
     def vis_rang(self):
         """Fonction qui plot l'évolution du rang d'un joueur au fil de sa carrière."""
@@ -128,10 +122,11 @@ class joueur:
             print(f"{self.nom} n'a pas joué cette année")
             return
 
+        year_data_dict['winrate']=year_data_dict['win']/year_data_dict['matchs']
         # Define the keys to plot
         keys_to_plot = [
             'pourc_return_win_pnt', 'pourc_break_games', 'pourc_break_point_made',
-            'pourc_break_point_saved', 'pourc_serv_games_win', 'pourc_serv_in',
+            'pourc_break_point_saved', 'pourc_serv_games_win', 'winrate',
             ' % Break Point Saved', ' % Break Points Converted Pressure',
             ' % Deciding Sets Won', ' % Tie Breaks Won'
         ]
@@ -146,7 +141,7 @@ class joueur:
 
     def prediction_atp_points(self, year):
 
-        print(self.infos)
+
         # Convert the year's data from string to dictionary
         year_data_str = self.infos[str(year)].values[0]
         year_data_dict = ast.literal_eval(year_data_str)
@@ -182,6 +177,41 @@ class joueur:
 
         return all_players_neural_network_model.predict(X)
 
+    def prediction_rang(self,year):
+
+        """ fonction qui prédit le rang d'un joueur en fonction de ses stats sur cette année """
+
+        # Convert the year's data from string to dictionary
+        year_data_str = self.infos[str(year)].values[0]
+        year_data_dict = ast.literal_eval(year_data_str)
+
+        if not year_data_dict:
+            print(f"{self.nom} n'a pas joué cette année")
+            return
+
+        df_year = pd.read_csv('./Data/Data_utiles/Data_ML/infos_joueurs_{}.csv'.format(year))
+
+        X = df_year[df_year['name'] == self.nom].copy()
+
+
+        X = X.drop(['Unnamed: 0', 'rang', 'name', 'hand', 'atp_points'], axis=1).copy()
+        if len(X.columns)>16:
+            X=X.drop(['Return Rating', ' % Serve Return Points Won',
+                   ' % 2nd Serve Return Points Won', ' % Return Games Won',
+                   ' % Break Points Converted', 'Under Pressure Rating',
+                   ' % Break Point Saved', ' % Break Points Converted Pressure',
+                   ' % Deciding Sets Won', ' % Tie Breaks Won'], axis=1)
+        else:
+            X=X.drop([ 'Under Pressure Rating',
+                   ' % Break Point Saved', ' % Break Points Converted Pressure',
+                   ' % Deciding Sets Won', ' % Tie Breaks Won'], axis=1)
+
+        X = X.reset_index(drop=True)
+
+
+        rang_neural_network_model = load_model('./Modeles_ML/rang_neural_network_model.keras')
+
+        return rang_neural_network_model.predict(X)
 
     def list_rang(self):
         """Fonction qui retourne les données pour l'évolution du rang d'un joueur."""
