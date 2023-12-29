@@ -24,9 +24,9 @@ class JoueurApp:
         self.label_annee.pack(pady=10)
 
         self.selected_annee = tk.StringVar()
-        self.selected_annee.set("2022")  # Année par défaut
+        self.selected_annee.set("2021")  # Année par défaut
 
-        self.annee_menu = ttk.Combobox(self.root, textvariable=self.selected_annee, values=[str(year) for year in range(1993, 2023)])
+        self.annee_menu = ttk.Combobox(self.root, textvariable=self.selected_annee, values=[str(year) for year in range(1993, 2021)])
         self.annee_menu.pack(pady=10)
 
         # Bouton pour afficher les joueurs de l'année sélectionnée
@@ -117,15 +117,25 @@ class JoueurApp:
         rafa = joueur(nom_joueur)
         try:
             predicted_points = rafa.prediction_atp_points(year)
+            predicted_rank = rafa.prediction_rang(year)
+            
+            # Assurez-vous que les prédictions sont des nombres ou des textes que vous pouvez afficher
+            predicted_points_str = f"Points ATP prédits pour {year}: {predicted_points}"
+            predicted_rank_str = f"Rang prédit pour {year}: {predicted_rank}"
+            
             if self.label_prediction:
                 self.label_prediction.pack_forget()
-            self.label_prediction = tk.Label(self.root, text=f"Classement prédit pour {year}: {predicted_points}")
+            
+            self.label_prediction = tk.Label(self.root, text=f"{predicted_points_str}\n{predicted_rank_str}")
             self.label_prediction.pack(pady=10)
         except Exception as e:
+            # Gérer le cas où la prédiction échoue
             if self.label_prediction:
                 self.label_prediction.pack_forget()
+            
             self.label_prediction = tk.Label(self.root, text=f"Erreur lors de la prédiction: {e}")
             self.label_prediction.pack(pady=10)
+
     
     def setup_comparison_ui(self):
         # Créer le widget de sélection de l'année pour la comparaison
@@ -225,11 +235,14 @@ class JoueurApp:
 
 
     def plot_figure(self, figure):
-        if self.canvas:
-            self.canvas.get_tk_widget().pack_forget()
-        self.canvas = FigureCanvasTkAgg(figure, master=self.root)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        # Créer une nouvelle fenêtre pop-up
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Graphique")
+
+        # Ajouter le graphique à la fenêtre pop-up
+        canvas = FigureCanvasTkAgg(figure, master=new_window)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
     
 
