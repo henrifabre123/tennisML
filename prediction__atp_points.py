@@ -13,6 +13,8 @@ from sklearn.metrics import accuracy_score
 import joblib
 
 
+
+
 #On commence par formater les données
 # Chargement des données
 base_path = './Data/Data_utiles/Data_ML/'
