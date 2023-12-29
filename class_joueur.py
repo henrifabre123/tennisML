@@ -187,11 +187,9 @@ class joueur:
 
         X = X.reset_index(drop=True)
 
-        # Normalisation des données après la sélection des colonnes
-        #scaler = StandardScaler()
-        #X_scaled = scaler.fit_transform(X)
 
-        all_players_neural_network_model = load_model('./Modeles_ML/all_players_neural_network_model.keras')
+        data_path = Path(__file__).parent /"Modeles_ML"/"all_players_neural_network_model.keras"
+        all_players_neural_network_model = load_model(data_path)
 
         return all_players_neural_network_model.predict(X)
 
@@ -232,8 +230,8 @@ class joueur:
 
         X = X.reset_index(drop=True)
 
-
-        rang_neural_network_model = load_model('./Modeles_ML/rang_neural_network_model.keras')
+        data_path = Path(__file__).parent /"Modeles_ML"/"rang_neural_network_model.keras"
+        rang_neural_network_model = load_model(data_path)
 
         return rang_neural_network_model.predict(X)
 
@@ -292,7 +290,7 @@ class joueur:
         """
         Fonction qui vérifie si le joueur a joué pendant une année spécifiée.
         """
-        
+
         year_data_str = self.infos[str(year)].values[0]
         year_data_dict = ast.literal_eval(year_data_str)
         return bool(year_data_dict)
@@ -312,6 +310,8 @@ class PlayerRadarChart:
     def plot_on_ax(self, ax, color, label):
         ax.plot(self.angles, self.values, color=color, linewidth=2, linestyle='solid', label=label)
         ax.fill(self.angles, self.values, color=color, alpha=0.25)
+        ax.set_xticks(self.angles[:-1])
+        ax.set_xticklabels(self.categories, color='grey', size=8)  # Ajout des étiquettes de catégorie
 
 
     def plot(self, title="Player Radar Chart"):
