@@ -10,5 +10,8 @@ pip install matplotlib
 pip install seaborn
 pip install plotly
 pip install lxml
+pip install tensorflow
+pip install scikit-learn
+
 
 
