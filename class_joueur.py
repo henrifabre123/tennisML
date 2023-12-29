@@ -74,7 +74,7 @@ class joueur:
         filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
 
         return filtered_data
-    
+
     def vis_rang(self):
         """Fonction qui plot l'évolution du rang d'un joueur au fil de sa carrière."""
         liste_rang = []
@@ -169,12 +169,12 @@ class joueur:
         X = X.reset_index(drop=True)
 
         # Normalisation des données après la sélection des colonnes
-        scaler = StandardScaler()
-        X_scaled = scaler.fit_transform(X)
+        #scaler = StandardScaler()
+        #X_scaled = scaler.fit_transform(X)
 
         all_players_neural_network_model = load_model('./Modeles_ML/all_players_neural_network_model.keras')
 
-        return all_players_neural_network_model.predict(X_scaled)
+        return all_players_neural_network_model.predict(X)
 
 
     def list_rang(self):
@@ -220,11 +220,7 @@ class joueur:
         return filtered_data
 
 
-#rafa=joueur("rafael nadal")
-#print(rafa.prediction_atp_points(2015))
 
-#djoko=joueur("novak djokovic")
-#print(djoko.prediction_atp_points(2015))
 
 class PlayerRadarChart:
     def __init__(self, data):
