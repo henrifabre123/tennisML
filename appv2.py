@@ -47,6 +47,7 @@ class JoueurApp:
         # Variable pour stocker les joueurs de l'année sélectionnée
         self.joueurs_annee = None
 
+
     def afficher_joueurs(self):
         # Récupérer l'année sélectionnée
         year = int(self.selected_annee.get())
@@ -54,21 +55,29 @@ class JoueurApp:
         # Filtrer les joueurs qui ont joué cette année
         self.joueurs_annee = [nom for nom in df_info_joueurs['name'] if joueur(nom).a_joue(year)]
 
+        # Vérifier si les widgets de sélection du joueur existent
+        if not hasattr(self, 'label_joueur'):
+            # Créer les widgets de sélection du joueur
+            self.label_joueur = tk.Label(self.root, text="Sélectionnez un joueur :")
+            self.label_joueur.pack(pady=10)
+
+            self.selected_joueur = tk.StringVar()
+            self.selected_joueur.set(self.joueurs_annee[0] if self.joueurs_annee else "")
+
+            self.joueur_menu = ttk.Combobox(self.root, textvariable=self.selected_joueur, values=self.joueurs_annee)
+            self.joueur_menu.pack(pady=10)
+
         # Mettre à jour les valeurs du menu de sélection du joueur
         self.joueur_menu['values'] = self.joueurs_annee
         self.joueur_menu.set(self.joueurs_annee[0] if self.joueurs_annee else "")
+        self.selected_joueur.set(self.joueurs_annee[0] if self.joueurs_annee else "")
 
         # Activer les boutons pour afficher les graphiques
         self.button_vis_rang['state'] = tk.NORMAL
         self.button_vis_stats['state'] = tk.NORMAL
 
-        # Afficher les résultats
-        if self.joueurs_annee:
-            resultat_str = "Les joueurs qui ont joué en {} : {}".format(year, ", ".join(self.joueurs_annee))
-        else:
-            resultat_str = "Aucun joueur n'a joué en {}".format(year)
 
-        self.label_resultats.config(text=resultat_str)
+
 
     def plot_vis_rang(self):
         nom_joueur = self.selected_joueur.get()
