@@ -7,6 +7,7 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
 from sklearn.preprocessing import StandardScaler
+from pathlib import Path
 import joblib
 
 

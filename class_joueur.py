@@ -150,7 +150,9 @@ class joueur:
             print(f"{self.nom} n'a pas joué cette année")
             return
 
-        df_year = pd.read_csv('./Data/Data_utiles/Data_ML/infos_joueurs_{}.csv'.format(year))
+        # Utiliser pathlib pour définir le chemin du fichier
+        data_path = Path(__file__).parent / "Data" / "Data_utiles" / "Data_ML" / f"infos_joueurs_{year}.csv"
+        df_year = pd.read_csv(data_path)
 
         X = df_year[df_year['name'] == self.nom].copy()
 
@@ -189,12 +191,16 @@ class joueur:
             print(f"{self.nom} n'a pas joué cette année")
             return
 
-        df_year = pd.read_csv('./Data/Data_utiles/Data_ML/infos_joueurs_{}.csv'.format(year))
+        # Utiliser pathlib pour définir le chemin du fichier
+        data_path = Path(__file__).parent / "Data" / "Data_utiles" / "Data_ML" / f"infos_joueurs_{year}.csv"
+        df_year = pd.read_csv(data_path)
+
 
         X = df_year[df_year['name'] == self.nom].copy()
 
 
         X = X.drop(['Unnamed: 0', 'rang', 'name', 'hand', 'atp_points'], axis=1).copy()
+
         if len(X.columns)>16:
             X=X.drop(['Return Rating', ' % Serve Return Points Won',
                    ' % 2nd Serve Return Points Won', ' % Return Games Won',
