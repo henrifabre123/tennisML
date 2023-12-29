@@ -39,3 +39,14 @@ Le travail de visualisation s'articule en deux parties :
 ## Modélisation
 
 Notre objectif de modélisation était de prédire le rang final annuel d'un joueur en fonction de ses performances dans les matchs. Nous avons choisi d'utiliser le classement ATP et les points ATP comme indicateurs, en raison de l'inflation significative des points ATP au cours de la dernière décennie.
+
+L'objectif de la partie modélisation, au delà de prédire le rang et le nombre de points de chaque joueur, est surtout de pouvoir comparer des joueurs qui n'ont jamais joué ensemble. En effet, comme les modèles sont entrainés sans tenir compte des années, les seuls critères seront les statistiques de chaque joueur. Il faut vraiment comprendre que le dataset a été "Uniformisé" pour simuler le fait que tous les joueurs aient joué la même année.
+
+Cela amène certains problèmes pour la prédiction du rang. Sur certaines années, des joueurs comme Djokovic ou Nadal ont eu des stats tellement hors normes que le modèle leur prédit un rang légèrement négatif (-0,8) qui peut toute fois s'interpréter comme le fait d'être simplement le meilleur joueur.
+
+Nous avons testé 3 approches différentes pour arriver à nos fins:
+- `Régression Ridge`
+- `SVM`
+- `Réseau de neurones`
+
+Pour conclure nous avons gardé le modèle de réseau de neurones puisqu'il prend le mieux en compte la partie non linéaire de la variable à prédire.
