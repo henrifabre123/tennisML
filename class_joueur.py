@@ -34,7 +34,10 @@ class joueur:
 
 
     def list_rang(self):
-        """Fonction qui retourne les données pour l'évolution du rang d'un joueur."""
+        """
+        Fonction qui retourne les données pour l'évolution du rang d'un joueur.
+        """
+
         liste_rang = []
         liste_annee = []
 
@@ -49,7 +52,12 @@ class joueur:
         return {'annees': liste_annee, 'rangs': liste_rang}
 
     def list_stats(self, year):
-        """Fonction qui retourne les données pour le graphique radar des stats du joueur."""
+
+        """
+        Fonction qui retourne les données pour le graphique radar des stats du joueur.
+        """
+
+
         if self.infos.empty or str(year) not in self.infos:
             print(f"No data available for {self.nom} in {year}.")
             return None
@@ -76,7 +84,11 @@ class joueur:
         return filtered_data
 
     def vis_rang(self):
-        """Fonction qui plot l'évolution du rang d'un joueur au fil de sa carrière."""
+
+        """
+        Fonction qui plot l'évolution du rang d'un joueur au fil de sa carrière.
+        """
+
         liste_rang = []
         liste_annee = []
 
@@ -108,7 +120,9 @@ class joueur:
 
 
     def vis_stats(self,year):
-        """ fonction qui va afficher un graphique spyder des stats du joueur sur l'année demandée """
+        """
+        fonction qui va afficher un graphique spyder des stats du joueur sur l'année demandée
+        """
 
         if self.infos.empty or str(year) not in self.infos:
             print(f"No data available for {self.nom} in {year}.")
@@ -140,7 +154,9 @@ class joueur:
 
 
     def prediction_atp_points(self, year):
-
+        """
+        fonction qui prédit le score atp d'un joueur sur une saison
+        """
 
         # Convert the year's data from string to dictionary
         year_data_str = self.infos[str(year)].values[0]
@@ -181,7 +197,9 @@ class joueur:
 
     def prediction_rang(self,year):
 
-        """ fonction qui prédit le rang d'un joueur en fonction de ses stats sur cette année """
+        """
+        fonction qui prédit le rang d'un joueur en fonction de ses stats sur cette année
+        """
 
         # Convert the year's data from string to dictionary
         year_data_str = self.infos[str(year)].values[0]
@@ -220,7 +238,11 @@ class joueur:
         return rang_neural_network_model.predict(X)
 
     def list_rang(self):
-        """Fonction qui retourne les données pour l'évolution du rang d'un joueur."""
+
+        """
+        Fonction qui retourne les données pour l'évolution du rang d'un joueur.
+        """
+
         liste_rang = []
         liste_annee = []
 
@@ -235,7 +257,11 @@ class joueur:
         return {'annees': liste_annee, 'rangs': liste_rang}
 
     def list_stats(self, year):
-        """Fonction qui retourne les données pour le graphique radar des stats du joueur."""
+
+        """
+        Fonction qui retourne les données pour le graphique radar des stats du joueur.
+        """
+
         if self.infos.empty or str(year) not in self.infos:
             print(f"No data available for {self.nom} in {year}.")
             return None
@@ -260,9 +286,13 @@ class joueur:
         filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
 
         return filtered_data
-    
+
     def a_joue(self, year):
-        """Fonction qui vérifie si le joueur a joué pendant une année spécifiée."""
+
+        """
+        Fonction qui vérifie si le joueur a joué pendant une année spécifiée.
+        """
+        
         year_data_str = self.infos[str(year)].values[0]
         year_data_dict = ast.literal_eval(year_data_str)
         return bool(year_data_dict)
