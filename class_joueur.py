@@ -260,6 +260,12 @@ class joueur:
         filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
 
         return filtered_data
+    
+    def a_joue(self, year):
+        """Fonction qui vérifie si le joueur a joué pendant une année spécifiée."""
+        year_data_str = self.infos[str(year)].values[0]
+        year_data_dict = ast.literal_eval(year_data_str)
+        return bool(year_data_dict)
 
 
 
