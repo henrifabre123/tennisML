@@ -21,74 +21,70 @@ def get_page_content(url, wait_time=10):
     return page_content
 
 def scrape_return_stats(year):
-    # Construire l'URL avec l'année spécifiée
+    # URL de la page
     url = f'https://www.atptour.com/en/stats/leaderboard?boardType=return&timeFrame={year}&surface=all&versusRank=all&formerNo1=false'
 
     # Obtenir le contenu de la page
     content = get_page_content(url)
 
-    # Utiliser lxml pour créer un objet ElementTree à partir du contenu de la page
+    # Parser le contenu de la page
     tree = html.fromstring(content)
 
-    # Utiliser l'XPath pour extraire le tableau
-    table = tree.xpath('//div[@id="statsListingTableContent"]/table')[0]
+    # Sélectionner le tableau des statistiques
+    table = tree.xpath('//div[contains(@class, "leaderboard")]//table')[0]
 
-
-
+    # Extraire les données
     data = []
-    for row in table.xpath('.//tbody//tr'):
-        player_name_elements = row.xpath('.//td[2]/div/a[@class="stats-player-name"]/text()')
-        player_name = player_name_elements[0].strip() if player_name_elements else 'N/A'
-        
-        # Extraire les autres données de la ligne
-        row_data = [player_name] + [td.text.strip() if td.text else '' for td in row.xpath('.//td')[1:]]  # Ajouter le nom du joueur en première colonne
-        #print("Row data:", row_data)
-        data.append(row_data)
+    for row in table.xpath('.//tbody/tr'):
+        # Extraire le rang, le nom du joueur et les statistiques
+        rank = row.xpath('.//td[1]/text()')[0].strip()
+        player_name = row.xpath('.//td[2]//div[@class="name"]/text()')[0].strip()
+        stats = [td.text.strip() for td in row.xpath('.//td[position()>2]')]
 
-    # Créer un DataFrame Pandas
-    df = pd.DataFrame(data, columns = ['Name',' ','Return Rating','% 1 Serve Return Points Won','% 2nd Serve Return Points Won','% Return Games Won','% Break Points Converted'])
+        # Ajouter les données à la liste
+        data.append([rank, player_name] + stats)
+
+    # Créer un DataFrame
+    columns = ['Rank', 'Name', 'Return Rating', '% 1st Serve Return Points Won', '% 2nd Serve Return Points Won', '% Return Games Won', '% Break Points Converted']
+    df = pd.DataFrame(data, columns=columns)
     df['Year'] = year
-    df['Ranking']= df.index + 1
-    df.insert(0, 'Ranking', df.pop('Ranking'))
 
     return df
 
-# Utilisation de la fonction pour l'année 2022
-#scrape_return_stats(2022)
 
 def scrape_pressure_stats(year):
     # Construire l'URL avec l'année spécifiée
     url = f'https://www.atptour.com/en/stats/leaderboard?boardType=pressure&timeFrame={year}&surface=all&versusRank=all&formerNo1=false'
-    # Obtenir le contenu de la page
+   # Obtenir le contenu de la page
     content = get_page_content(url)
 
-    # Utiliser lxml pour créer un objet ElementTree à partir du contenu de la page
+    # Parser le contenu de la page
     tree = html.fromstring(content)
 
-    # Utiliser l'XPath pour extraire le tableau
-    table = tree.xpath('//table[@border="0" and @cellpadding="0" and @cellspacing="0"]')[0]
+    # Sélectionner le tableau des statistiques
+    table = tree.xpath('//div[contains(@class, "leaderboard")]//table')[0]
 
-
-
-    
-    player_names = [name.strip() for name in table.xpath('.//td[2]/div/div[3]/text()')]
-    
-    
-    # Ensuite, extraire les autres données de la ligne
+    # Extraire les données
     data = []
-    for row, player_name in zip(table.xpath('.//tbody//tr'), player_names):
-        row_data = [player_name] + [td.text.strip() if td.text else '' for td in row.xpath('.//td')[2:]]  # Commencer à partir de la troisième colonne car la première contient les numéros et la deuxième le nom du joueur
-        data.append(row_data)
+    for row in table.xpath('.//tbody/tr'):
+        # Extraire le rang, le nom du joueur et les statistiques
+        rank = row.xpath('.//td[1]/text()')[0].strip()
+        player_name = row.xpath('.//td[2]//div[@class="name"]/text()')[0].strip()
+        stats = [td.text.strip() for td in row.xpath('.//td[position()>2]')]
 
-    # Créer un DataFrame Pandas
-    df = pd.DataFrame(data, columns=['Name', 'Under Pressure Rating', '% Break Points Converted', '% Break Points Saved', '% Tie Breaks Won', '% Deciding Sets Won'])
+        # Ajouter les données à la liste
+        data.append([rank, player_name] + stats)
 
-    # Créer un DataFrame Pandas
-    df = pd.DataFrame(data, columns = ['Name',' ','Under Pressure Rating','% Break Points Converted','% Break Point Saved','% Tie Breaks Won','% Deciding Sets Won'])
+    # Créer un DataFrame
+    columns = ['Rank', 'Name', 'Return Rating', '% 1st Serve Return Points Won', '% 2nd Serve Return Points Won', '% Return Games Won', '% Break Points Converted']
+    df = pd.DataFrame(data, columns=columns)
     df['Year'] = year
-    df['Ranking']= df.index + 1
-    df.insert(0, 'Ranking', df.pop('Ranking'))
-    return player_names
+
+    return df
+
+
+# Utilisation de la fonction pour l'année 2022
+#scrape_return_stats(2022)
 
 #Test de la fonction under pressure
 #scrape_pressure_stats(2022)
