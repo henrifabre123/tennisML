@@ -146,9 +146,9 @@ class JoueurApp:
             self.label_annee_compare = tk.Label(self.root, text="Sélectionnez une année pour la comparaison :")
             self.label_annee_compare.pack(pady=10)
             self.selected_annee_compare = tk.StringVar()
-            self.selected_annee_compare.set("2022")  # Année par défaut pour la comparaison
+            self.selected_annee_compare.set("2021")  # Année par défaut pour la comparaison
 
-            self.annee_menu_compare = ttk.Combobox(self.root, textvariable=self.selected_annee_compare, values=[str(year) for year in range(1993, 2023)])
+            self.annee_menu_compare = ttk.Combobox(self.root, textvariable=self.selected_annee_compare, values=[str(year) for year in range(1993, 2021)])
             self.annee_menu_compare.pack(pady=10)
         
             self.annee_menu_compare.bind('<<ComboboxSelected>>', self.update_joueur_menu_compare)
@@ -194,28 +194,29 @@ class JoueurApp:
     def generate_comparison_radar_chart(self, player1_name, player2_name, year1, year2):
         def prepare_player_data(player_name, year):
             player_info = df_info_joueurs[df_info_joueurs['name'] == player_name]
-            if player_info.empty or str(year) not in player_info:
+            if player_info.empty or str(year) not in player_info or pd.isna(player_info[str(year)].values[0]):
                 print(f"No data available for {player_name} in {year}.")
                 return None
 
             year_data_str = player_info[str(year)].values[0]
-            year_data_dict = ast.literal_eval(year_data_str)
-            year_data_dict = self.convert_percentages_to_decimals(year_data_dict)
-            filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
-            return filtered_data
+            if year_data_str:  # Assurez-vous que la chaîne n'est pas vide
+                year_data_dict = ast.literal_eval(year_data_str)
+                if year_data_dict:  # Assurez-vous que le dictionnaire n'est pas None
+                    year_data_dict = self.convert_percentages_to_decimals(year_data_dict)
+                    filtered_data = {key: year_data_dict[key] for key in keys_to_plot if key in year_data_dict}
+                    return filtered_data
+            return None
 
-        keys_to_plot = ['pourc_return_win_pnt', 'pourc_break_games', 'pourc_break_point_made',
-                        'pourc_break_point_saved', 'pourc_serv_games_win', 'pourc_serv_in',
-                        ' % Break Point Saved', ' % Break Points Converted Pressure',
-                        ' % Deciding Sets Won', ' % Tie Breaks Won']
+        keys_to_plot = [
+            'pourc_return_win_pnt', 'pourc_break_games', 'pourc_break_point_made',
+            'pourc_break_point_saved', 'pourc_serv_games_win', 'pourc_serv_in']
+
 
         player1_data_year1 = prepare_player_data(player1_name, year1)
-        player1_data_year2 = prepare_player_data(player1_name, year2)
-        player2_data_year1 = prepare_player_data(player2_name, year1)
         player2_data_year2 = prepare_player_data(player2_name, year2)
 
-        if any(data is None for data in [player1_data_year1, player1_data_year2, player2_data_year1, player2_data_year2]):
-            return  # Handle the case where data is missing
+        if any(data is None for data in [player1_data_year1, player2_data_year2]):
+            return  None
 
         fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
         radar_chart1_y1 = PlayerRadarChart(player1_data_year1)
@@ -225,18 +226,19 @@ class JoueurApp:
         radar_chart2_y2.plot_on_ax(ax, 'orange', f'{player2_name} {year2}')
 
         ax.legend(loc='upper right')
+        ax.set_xticks(radar_chart1_y1.angles[:-1])
+        ax.set_xticklabels(radar_chart1_y1.categories, color='grey', size=8)  # Ajoutez des étiquettes de catégorie
         plt.title(f'Comparison: {player1_name} vs {player2_name} ({year1} vs {year2})', size=15)
+        
+        self.plot_figure(fig)  # Utilisez la méthode existante pour afficher la figure dans votre application Tkinter
 
-        self.plot_figure(fig)  # Use the existing method to display the figure in your Tkinter app
 
-            
+                
     def convert_percentages_to_decimals(self, data_dict):
-        # Convert percentage strings to decimal values here
-        # This is a placeholder for your actual conversion logic
         for key, value in data_dict.items():
             if isinstance(value, str) and '%' in value:
                 data_dict[key] = float(value.strip('%')) / 100
-            return data_dict
+        return data_dict
 
 
     def plot_figure(self, figure):
