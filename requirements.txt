@@ -1,19 +1,19 @@
-pip install pandas
-pip install numpy
-pip install ast
-pip install selenium
-pip install requests
-pip install sklearn
-pip install matplotlib
-pip install seaborn
-pip install plotly
-pip install lxml
-pip install tensorflow
-pip install scikit-learn
-pip install pathlib
-pip install joblib
-pip install tkinter
-pip install keras
+pandas
+numpy
+ast
+selenium
+requests
+sklearn
+matplotlib
+seaborn
+plotly
+lxml
+tensorflow
+scikit-learn
+pathlib
+joblib
+tkinter
+keras
 
 
 
