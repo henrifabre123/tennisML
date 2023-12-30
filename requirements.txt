@@ -10,7 +10,10 @@ pip install plotly
 pip install lxml
 pip install tensorflow
 pip install scikit-learn
-
+pip install pathlib
+pip install joblib
+pip install tkinter
+pip install keras
 
 
 
