@@ -11,18 +11,20 @@ Nous sommes trois étudiants passionnés de sport, désireux d'utiliser nos conn
 
 1. **Récupération et traitement des données**
    - `Traitement_data.ipynb`
+   - `scrapping.py`et `Extraction_info_retours.py` dans le dossier `./Data/Scrapping`
 2. **Visualisation et analyse des données**
    - `Visualisation.ipynb`
    - `appv2.py`
 3. **Algorithmes de prédiction**
    - Classement ATP d'un joueur sur une année: `prediction_atp_points.py`
    - Rang du joueur sur une année: `prediction_rang.py`
+   - Les modèles entrainés sont stockés dans le dossier `Modeles_ML`
 
 ## Données
 
 Les sources de nos données sont multiples :
 
-- Scraping des statistiques sur les services, retours, et performances sous pression des joueurs depuis le site de l'ATP pour les 20 dernières années.
+- Scraping des statistiques sur les services, retours, et performances sous pression des joueurs depuis le site de l'ATP pour les 20 dernières années. Tous les fichiers qui nous ont permis de scraper sont contenus dans `./Data/Scrapping`.
 - Exploitation des bases de données de matchs ATP (`atp_matches_201X`) et des classements hebdomadaires (`atp_rankings_10s`) fournies par Jeffrey Sackman.
 
 Les fichiers `atp_rankings` recensent le classement des 100 meilleurs joueurs semaine par semaine sur les 30 dernières années. Les fichiers `atp_matches` détaillent les informations relatives aux matchs : noms des joueurs, étape du tournoi, score, surface de jeu, classement des joueurs au moment du match.
