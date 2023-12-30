@@ -3,7 +3,7 @@ from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from class_joueur import joueur  # Assurez-vous que votre classe joueur est dans un fichier joueur.py
+from class_joueur import joueur  
 from pathlib import Path
 import ast
 from class_joueur import PlayerRadarChart

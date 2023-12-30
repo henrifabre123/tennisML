@@ -1,10 +1,8 @@
-pip install shiny
 pip install pandas
 pip install numpy
 pip install ast
 pip install selenium
 pip install requests
-pip install BeautifulSoup
 pip install sklearn
 pip install matplotlib
 pip install seaborn
@@ -12,6 +10,7 @@ pip install plotly
 pip install lxml
 pip install tensorflow
 pip install scikit-learn
+
 
 
 
