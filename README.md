@@ -41,6 +41,7 @@ Le travail de visualisation s'articule en deux parties :
 
 - Une analyse des différences de performance entre les joueurs du top 10 et ceux du top 40-50, afin d'identifier les attributs distinctifs d'un joueur professionnel et d'un joueur de classe mondiale.
 - Une étude individuelle et comparative des performances des joueurs, présentée vers la fin du fichier `visualisation.ipynb` et au sein de l'application `appv2.py`.
+- L'application a été codée avec la librairie Tkinter. Nous avons tenté une première approche avec Shiny pour Python mais cette librairie est trop récente. Nous manquions de documentation et nous n'avons pas réussi à résoudre un problème de pixel des Mac. Ainsi nous sommes revenus à une librairie plus classique, celle de Tkinter.
 
 ## Modélisation
 
@@ -59,4 +60,8 @@ Pour conclure nous avons gardé le modèle de réseau de neurones puisqu'il pren
 
 ## Conclusion
 
-Ce projet nous a permis de constater que le principal atout des joueurs du top 10 est la régularité sur tous les plans : physiques, mentaux, tactiques. Ils savent s'appuyer sur les fondamentaux 
+Ce projet nous a permis de constater que le principal atout des joueurs du top 10 est la régularité sur tous les plans : physiques, mentaux, tactiques. Ils savent s'appuyer sur les fondamentaux du jeu du tennis pour faire la différence face à des joueurs moins bien classés. Les différences entre joueurs du top 10 s'expliquent surtout par des styles de jeu différents. 
+
+### Pour aller plus loin : 
+Notre analyse aurait pu être étayée par une analyse plus précise du style de jeu de chaque joueur, notamment en fonction de la surface. Cela nous aurait permis ensuite de créer un modèle de prédiction des matches, mais cela s'éloigne de notre objectif de départ qui était centré sur les caractéristiques de jeu des joueurs du top niveau. 
+Nous aurions pu aussi de changer d'échelle, pour étudier à l'échelle d'un match les performances des joueurs de top niveau, plutôt que sur un année. Mais entrer dans une telle analyse aurait requis une masse de données bien plus importante (de l'ordre de l'information coup par coup), et nous aurait demandé de passer par des APIs payantes, ce qui nous a bloqué. 
