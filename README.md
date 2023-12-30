@@ -22,14 +22,18 @@ Nous sommes trois étudiants passionnés de sport, désireux d'utiliser nos conn
 
 ## Données
 
-Les sources de nos données sont multiples :
+## Sources de nos Données
 
-- Scraping des statistiques sur les services, retours, et performances sous pression des joueurs depuis le site de l'ATP pour les 20 dernières années. Tous les fichiers qui nous ont permis de scraper sont contenus dans `./Data/Scrapping`.
-- Exploitation des bases de données de matchs ATP (`atp_matches_201X`) et des classements hebdomadaires (`atp_rankings_10s`) fournies par Jeffrey Sackman.
+Notre projet s'appuie sur des données hétérogènes, obtenues par différents moyens :
+
+- **Scraping de Statistiques ATP** : Pour les 20 dernières années, nous avons extrait des statistiques détaillées sur les services, retours, et performances sous pression des joueurs depuis le site officiel de l'ATP. Ce processus n'a pas été sans difficultés. En effet, le site de l'ATP utilise JavaScript pour afficher dynamiquement ces données, ce qui a nécessité l'emploi de Selenium et de son Chromedriver. L'utilisation de Selenium était indispensable pour simuler un navigateur et attendre le chargement complet des scripts JavaScript. Tous nos scripts de scraping sont organisés dans le répertoire `./Data/Scrapping`, et les données récolltées se trouvent dans `./Data/Data_utiles`. Etant donné le temps d'exécution des scripts de scrapping, nous avons préféré inclure directement les données et ne pas inclure le scrapping dans le notebook `Traitement_data.ipynb`.
+
+- **Exploitation de Bases de Données ATP** : Nous avons également intégré des données issues des bases de données de matchs ATP (`atp_matches_201X`) et des classements hebdomadaires (`atp_rankings_10s`), gracieusement fournies par Jeffrey Sackman. Ces bases de données ont été cruciales pour compléter notre analyse et offrir une perspective plus large sur les performances des joueurs.
+
 
 Les fichiers `atp_rankings` recensent le classement des 100 meilleurs joueurs semaine par semaine sur les 30 dernières années. Les fichiers `atp_matches` détaillent les informations relatives aux matchs : noms des joueurs, étape du tournoi, score, surface de jeu, classement des joueurs au moment du match.
 
-Ces informations nous ont permis de constituer les bases de données `info_joueurs`, offrant un aperçu annuel des performances des joueurs : taux de victoire, statistiques sur les services, les retours, et la gestion de la pression.
+Ces informations nous ont permis de constituer les bases de données `info_joueurs`, offrant un aperçu annuel des performances des joueurs : taux de victoire, statistiques sur les services, les retours, et la gestion de la pression. La constitution de cette base de donnée est expliquée en détail dans `Visualisation.ipynb`
 
 ## Visualisation
 
