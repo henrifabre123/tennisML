@@ -56,3 +56,7 @@ Nous avons testé 3 approches différentes pour arriver à nos fins:
 - `Réseau de neurones`
 
 Pour conclure nous avons gardé le modèle de réseau de neurones puisqu'il prend le mieux en compte la partie non linéaire de la variable à prédire.
+
+## Conclusion
+
+Ce projet nous a permis de constater que le principal atout des joueurs du top 10 est la régularité sur tous les plans : physiques, mentaux, tactiques. Ils savent s'appuyer sur les fondamentaux 
