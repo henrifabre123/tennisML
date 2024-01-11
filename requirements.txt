@@ -1,18 +1,19 @@
 pandas
 numpy
-ast
+# ast
 selenium
 requests
-sklearn
+# sklearn
 matplotlib
 seaborn
 plotly
 lxml
-tensorflow
+#tensorflow
 scikit-learn
 pathlib
 joblib
-tkinter
+# tkinter
+tk
 keras
 
 
